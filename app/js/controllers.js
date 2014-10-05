@@ -4,11 +4,73 @@
 
 var phonecatControllers = angular.module('phonecatControllers', ['ui.bootstrap','ngSanitize']);
 
+function collectKeys(arr,typ){
+  console.log(arr[0]);
+  if(typ=='genre'){
+        var a = _.chain(arr).map(function(d){return d.genre;}).flatten().compact().countBy(function(d){return d;}).value();
+    var b = _.chain(a).pairs().sortBy(function(v){return 0-v[1];}).map(function(v){return v[0]}).value();
+    return b; 
+  }
+  if(typ=='title'){
+    var a = _.chain(arr).map(function(d){return d.title;}).flatten().compact().countBy(function(d){return d;}).value();
+    var b = _.chain(a).pairs().sortBy(function(v){return 0-v[1];}).map(function(v){return v[0]}).value();
+    return b;
+  }
+  return [];
+}
+
+phonecatControllers.controller('PhoneGridCtrl', ['$scope', 'Phone',
+  function($scope, Phone) {
+    $scope.yaxis = 'title';
+    $scope.xaxis = 'genre';
+    $scope.zaxis = 'place';
+    $scope.phones = Phone.query(function(){
+      $scope.orderFunc = function(d){return 0-new Date(d.date).valueOf();};
+      $scope.currentPage = 1;
+//      $scope.numPages = Math.ceil($scope.phones.length / 10); 
+      $scope.selectedGenres = '';
+      $scope.xkeys = collectKeys($scope.phones,$scope.xaxis);
+      $scope.ykeys = collectKeys($scope.phones,$scope.yaxis);
+      $scope.stat = {};
+      $scope.recalcStat();
+    });
+
+    $scope.content = function(kx,ky){
+      var x = $scope.stat[kx];
+      return x ? x[ky] : undefined;
+    };
+
+    $scope.recalcStat = function(){
+      var v = _.groupBy($scope.phones,function(phone){
+        return phone[$scope.xaxis];
+      });
+      console.log(v);
+      _.map($scope.phones,function(phone){
+        var kx = phone[$scope.xaxis];
+        var ky = phone[$scope.yaxis];
+        $scope.stat[kx] ? null : ($scope.stat[kx] = {});
+        $scope.stat[kx][ky] ? ($scope.stat[kx][ky] += 1) : ($scope.stat[kx][ky] = 1);
+      });
+    };
+
+    $scope.$watch('xaxis',function(nv){
+      $scope.xkeys = collectKeys($scope.phones,$scope.xaxis);
+      $scope.recalcStat();
+    });
+    $scope.$watch('yaxis',function(nv){
+      $scope.ykeys = collectKeys($scope.phones,$scope.yaxis);
+      $scope.recalcStat();
+    });
+    $scope.$watch('zaxis',function(nv){
+      $scope.zkeys = collectKeys($scope.phones,$scope.zaxis);
+      $scope.recalcStat();
+    });
+  }]);
+
 phonecatControllers.controller('PhoneListCtrl', ['$scope', 'Phone',
   function($scope, Phone) {
 
     $scope.phones = Phone.query(function(){
-      $scope.orderFunc = function(d){return 0-new Date(d.date).valueOf();};
       $scope.currentPage = 1;
 //      $scope.numPages = Math.ceil($scope.phones.length / 10); 
       $scope.selectedGenres = '';   

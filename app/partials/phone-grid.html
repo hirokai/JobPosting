@@ -1,0 +1,75 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3">
+      <!--Sidebar content-->
+      <p><small>最終データ更新：2014/10/5.</small></p>
+      キーワード： <input ng-model="query"><br>
+      Y軸：
+     <select ng-model="yaxis">
+        <option value="genre">分野</option>
+        <option value="title">職種</option>
+        <option value="place">都道府県</option>
+        <option value="institution">研究機関</option>
+        <option value="date">更新日</option>
+        <option value="deadline">締切日</option>
+      </select>
+      X軸：
+     <select ng-model="xaxis">
+        <option value="genre">分野</option>
+        <option value="title">職種</option>
+        <option value="place">都道府県</option>
+        <option value="institution">研究機関</option>
+        <option value="date">更新日</option>
+        <option value="deadline">締切日</option>
+      </select>
+      第3軸：
+     <select ng-model="zaxis">
+        <option value="genre">分野</option>
+        <option value="title">職種</option>
+        <option value="place">都道府県</option>
+        <option value="institution">研究機関</option>
+        <option value="date">更新日</option>
+        <option value="deadline">締切日</option>
+      </select>
+
+      表示順：
+      <select ng-model="orderProp">
+        <option value="period">締め切り（近&#8594;遠）</option>
+        <option value="period_rev">締め切り（遠&#8594;近）</option>
+        <option value="date">更新日（新&#8594;旧）</option>
+        <option value="date_rev">更新日（旧&#8594;新）</option>
+      </select>
+      </div>
+    <div class="col-md-9">
+      <!--Body content-->
+      <div id='righttop'>
+      <small><a href="https://github.com/hirokai/JobPosting">Source code</a></small><br><br>
+<div class="fb-like" data-href="https://hirokai.github.io/jrec-in" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
+      </div>
+
+<div id='topinfo'>
+      <p>{{filtered.length}}件見つかりました</p>
+      <button class='btn btn-default' ng-click='prevPage()' ng-disabled='currentPage==1'>Prev</button>
+      <span>{{currentPage}} / {{ceil(filtered.length / 50)}}</span>
+      <button class='btn btn-default' ng-click='nextPage()' ng-disabled='currentPage>=ceil(filtered.length / 50)'>Next</button>  
+</div>
+    
+    <table class='table'>
+      <thead>
+        <tr>
+          <th></th>
+          <th ng-repeat='kx in xkeys'>{{kx}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat='ky in ykeys'>
+          <td>{{ky}}</td>
+          <td ng-repeat='kx in xkeys'>{{content(kx,ky)}}</td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    </div>
+  </div>
+</div>
