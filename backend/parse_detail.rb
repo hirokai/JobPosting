@@ -4,7 +4,7 @@ require 'rubygems'
 require 'nokogiri'
 require 'fileutils'
 
-DATA_ID = '20141004_1'
+DATA_ID = '20141005_01'
 
 require 'json'
 
@@ -16,19 +16,36 @@ def chomp(s)
 	end
 end
 
+
+# List all active entries.
+
+links = []
+files = Dir.glob("search/#{DATA_ID}/**/*.html")
+for file in files
+	puts file
+	open(file) {|f|
+		page = f.read
+		doc = Nokogiri::HTML(page)
+		ls = doc.css('a[href]').map{|a| a['href']}
+				.map{|href| href =~ /id=(D\d{9})/; $1}.compact
+		links << ls
+	}
+end
+links = links.flatten.uniq
+
 outfolder = ENV['HOME'] + '/repos/JobPosting/app/data/'+DATA_ID
 
 if not File.exist? outfolder
 	FileUtils.mkdir_p outfolder
 end
 
-files = Dir.glob("details/D*.html")
-puts "#{files.length} files"
+puts "#{links.length} files"
 
-res = files.map.with_index{|file,i|
+res = links.map.with_index{|id,i|
 	if i % 100 == 0 and i > 0
 		puts  "#{i} files processed."
 	end
+	file = "details/#{id}.html"
 	open(file){|f|
 		doc = Nokogiri::HTML(f.read)
 		rows = doc.css('#detail_contents table table > tr')
@@ -90,7 +107,7 @@ res = files.map.with_index{|file,i|
 		preflist = {"愛知県" => "Aichi", "愛媛県" => "Ehime", "茨城県" => "Ibaraki", "岡山県" => "Okayama", "沖縄県" => "Okinawa", "岩手県" => "Iwate", "岐阜県" => "Gifu", "宮崎県" => "Miyazaki", "宮城県" => "Miyagi", "京都府" => "Kyoto", "熊本県" => "Kumamoto", "群馬県" => "Gunma", "広島県" => "Hiroshima", "香川県" => "Kagawa", "高知県" => "Kochi", "佐賀県" => "Saga", "埼玉県" => "Saitama", "三重県" => "Mie", "山形県" => "Yamagata", "山口県" => "Yamaguchi", "山梨県" => "Yamanashi", "滋賀県" => "Shiga", "鹿児島県" => "Kagoshima", "秋田県" => "Akita", "新潟県" => "Niigata", "神奈川県" => "Kanagawa", "青森県" => "Aomori", "静岡県" => "Shizuoka", "石川県" => "Ishikawa", "千葉県" => "Chiba", "大阪府" => "Osaka", "大分県" => "Oita", "長崎県" => "Nagasaki", "長野県" => "Nagano", "鳥取県" => "Tottori", "島根県" => "Shimane", "東京都" => "Tokyo", "徳島県" => "Tokushima", "栃木県" => "Tochigi", "奈良県" => "Nara", "富山県" => "Toyama", "福井県" => "Fukui", "福岡県" => "Fukuoka", "福島県" => "Fukushima", "兵庫県" => "Hyōgo", "北海道" => "Hokkaido", "和歌山県" => "Wakayama"}
 		locen = locs ? preflist[locs.split(',')[1]] : nil
 
-		hash['公開開始日'] =~ /(\d{4})年(\d{2})月(\d{2})日/u
+		hash['更新日'] =~ /(\d{4})年(\d{2})月(\d{2})日/u
 		time = begin
 				Time.local($1.to_i,$2.to_i,$3.to_i)
 			rescue

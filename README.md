@@ -12,6 +12,7 @@ Ruby, Npm, and Bower.
 
 ```shell
 git clone https://github.com/hirokai/JobPosting
+
 npm install
 bower install
 npm start

@@ -7,7 +7,7 @@ var phonecatServices = angular.module('phonecatServices', ['ngResource']);
 
 phonecatServices.factory('Phone', ['$resource',
   function($resource){
-	var data_id = '20141004_1';
+	var data_id = '20141005_01';
     return $resource('data/'+data_id+'/:phoneId.json', {}, {
       query: {method:'GET', params:{phoneId:'list'}, isArray:true,
       			transformResponse: function(str){
@@ -20,7 +20,12 @@ phonecatServices.factory('Phone', ['$resource',
 								: undefined;
 					d.genre = d.genre ? _.uniq(d.genre.split(':')) : undefined;
 					d.title = d.title ? _.uniq(d.title.split(':')) : undefined;
-					d.period = d.period ? d.period.split(':') : undefined;
+				  if(d.period){
+            d.period = d.period.split(':');
+            if(d.period[0]!= 'NA')d.period[0] = new Date(d.period[0]);
+            if(d.period[1]!= 'NA')d.period[1] = new Date(d.period[1]);
+          }
+          d.date = d.date ? new Date(d.date) : undefined;
 //					console.log(Object.keys(d.data || {}));
       			 	return d;
       			 });

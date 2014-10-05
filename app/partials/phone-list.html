@@ -2,14 +2,14 @@
   <div class="row">
     <div class="col-md-3">
       <!--Sidebar content-->
-      <p><small>最終データ更新：2014/10/3.</small></p>
+      <p><small>最終データ更新：2014/10/5.</small></p>
       キーワード： <input ng-model="query">
       表示順：
       <select ng-model="orderProp">
         <option value="period">締め切り（近&#8594;遠）</option>
         <option value="period_rev">締め切り（遠&#8594;近）</option>
-        <option value="date">公開日（新&#8594;旧）</option>
-        <option value="date_rev">公開日（旧&#8594;新）</option>
+        <option value="date">更新日（新&#8594;旧）</option>
+        <option value="date_rev">更新日（旧&#8594;新）</option>
       </select>
       <h4>分野</h4>
       <ul class='leftul'>
@@ -27,7 +27,7 @@
       <h4>職位</h4>
       <ul class='leftul'>
         <li>
-          <input type="checkbox" ng-model='alltitles' ng-click='alltitlesToggle()' id='alltitles'><label for='allgenres'>すべて選択／解除</label>
+          <input type="checkbox" ng-model='alltitles' ng-click='alltitlesToggle()' id='alltitles'><label for='alltitles'>すべて選択／解除</label>
           </li>
           <li><hr></li>
             <li ng-repeat='t in titles'>
@@ -57,7 +57,7 @@
 <!--          <a href="https://jrecin.jst.go.jp/seek/SeekJorDetail?id={{phone.id}}">{{phone.subject}}</a> -->
           <a href="#/phones/{{phone.id}}">{{phone.subject}}</a>
           <p>{{phone.title.join('／')}} &#64; {{phone.institution}}（{{phone.place}}）</p>
-          <p>公開：{{phone.date}}　期限：{{phone.period[1]}}（残り{{remaining(phone)}}日）</p>
+          <p>公開：{{formatDate(phone.date)}}　期限：{{formatDate(phone.period[1])}}（残り{{remaining(phone)}}日）</p>
           <p>分野：
               <span ng-repeat='p in phone.genre'>{{p}}. </span></p>
           <div class='preview' ng-if='showing == phone.id' ng-controller='PhonePreviewCtrl'>

@@ -6,6 +6,7 @@ var phonecatControllers = angular.module('phonecatControllers', ['ui.bootstrap',
 
 phonecatControllers.controller('PhoneListCtrl', ['$scope', 'Phone',
   function($scope, Phone) {
+
     $scope.phones = Phone.query(function(){
       $scope.orderFunc = function(d){return 0-new Date(d.date).valueOf();};
       $scope.currentPage = 1;
@@ -15,6 +16,9 @@ phonecatControllers.controller('PhoneListCtrl', ['$scope', 'Phone',
 
     $scope.orderProp = 'date';
 
+    if(localStorage['jrecin-genres']){
+      $scope.genres = JSON.parse(localStorage['jrecin-genres']);
+    }else{
     $scope.genres = [
       {id: 'humanint',name: '総合人文社会', selected: true},
       {id: 'human',name: '人文学', selected: true},
@@ -31,7 +35,12 @@ phonecatControllers.controller('PhoneListCtrl', ['$scope', 'Phone',
       {id: 'env',name: '環境学', selected: true},
       {id: 'int',name: '複合領域', selected: true},
       {id: 'other',name: 'その他', selected: true}
-    ];
+    ];      
+    }
+
+    if(localStorage['jrecin-titles']){
+      $scope.titles = JSON.parse(localStorage['jrecin-titles']);
+    }else{
 
     $scope.titles = [
       {id: 'head',name: '機関の長相当', selected: true},
@@ -47,6 +56,18 @@ phonecatControllers.controller('PhoneListCtrl', ['$scope', 'Phone',
       {id: 'commun',name: 'コミュニケーター相当', selected: true}
       ,{id: 'other',name: 'その他', selected: true}
     ];
+  }
+
+      if(localStorage['jrecin-alltoggles']){
+        var a = JSON.parse(localStorage['jrecin-alltoggles']);
+        console.log(a);
+        $scope.allgenres = a.genres;
+        $scope.alltitles = a.titles;
+      }else{
+        $scope.allgenres = true;
+        $scope.alltitles = true;
+      }
+
 
     $scope.selectGenre = function(o,idx){
       var g = o.genre;
@@ -93,17 +114,17 @@ phonecatControllers.controller('PhoneListCtrl', ['$scope', 'Phone',
       $scope.currentPage = _.max([1,p]);
     }
 
-    $scope.allgenres = true;
 
     $scope.allgenresToggle = function(){
+      localStorage['jrecin-alltoggles'] = JSON.stringify({genres: !$scope.allgenres, titles: $scope.alltitles});
       _.map($scope.genres,function(g){
         g.selected = !$scope.allgenres;
       });
     };
 
-    $scope.alltitles = true;
 
     $scope.alltitlesToggle = function(){
+      localStorage['jrecin-alltoggles'] = JSON.stringify({titles: !$scope.alltitles, genres: $scope.allgenres});
       _.map($scope.titles,function(g){
         g.selected = !$scope.alltitles;
       });
@@ -118,12 +139,16 @@ phonecatControllers.controller('PhoneListCtrl', ['$scope', 'Phone',
       }
     };
 
+    $scope.formatDate = function(d){
+      return d.getFullYear() + "年" + (d.getMonth() + 1) + "月" + d.getDate() + '日';
+    };
+
     $scope.$watch('orderProp',function(d){
       console.log(d);
 
       var list = {
-        period: function(d){return 0-new Date(d.date).valueOf();}
-        , period_rev: function(d){return new Date(d.date).valueOf();}
+        period: function(d){return d.period[1].valueOf();}
+        , period_rev: function(d){return 0-d.period[1].valueOf();}
         , date: function(d){return 0-new Date(d.date).valueOf();}
         , date_rev: function(d){return new Date(d.date).valueOf();}
       };
@@ -131,6 +156,14 @@ phonecatControllers.controller('PhoneListCtrl', ['$scope', 'Phone',
       console.log(list[d]);
 
       $scope.orderFunc = list[d];
+    },true);
+
+    $scope.$watch('genres',function(newval,oldval){
+      localStorage['jrecin-genres'] = JSON.stringify(newval);
+    },true);
+
+    $scope.$watch('titles',function(newval,oldval){
+      localStorage['jrecin-titles'] = JSON.stringify(newval);
     },true);
 
   }]);
