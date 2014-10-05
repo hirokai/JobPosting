@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en" ng-app="phonecatApp">
+<head>
+  <meta charset="utf-8">
+  <title>JREC-IN search</title>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <script src="bower_components/jquery/jquery.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+<!--  <script src="bower_components/angular-animate/angular-animate.js"></script> -->
+<script type="text/javascript" src='http://underscorejs.org/underscore-min.js'></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular-sanitize.min.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/services.js"></script>
+
+  <style type="text/css">
+  .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+  .btn:focus {
+  outline: none ! important;
+}
+
+label {
+  font-size: 12px;
+}
+
+ul.leftul > li{
+  margin-left: 10px;
+  list-style:none;
+}
+
+ul.leftul > li.float {
+    float: left;
+}
+
+.phone-listing {
+  cursor: pointer;
+}
+
+li.detail {
+  height: auto;
+}
+
+li > hr {
+  margin: 10px;
+}
+
+</style>
+</head>
+<body>
+
+  <div class="view-container">
+    <div ng-view class="view-frame"></div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+
+<div class='row'>
+  <div class='col-md-10 col-md-offset-1'>
+
+<p><small>  <a href="javascript:history.back();">戻る</a></small> </p>
+<h2>{{phone.subject}}</h2>
+
+<p><small>元URL: <a href="https://jrecin.jst.go.jp/seek/SeekJorDetail?id={{phone.id}}">https://jrecin.jst.go.jp/seek/SeekJorDetail?id={{phone.id}}</a></small></p>
+
+<ul class="specs">
+  <li>
+    <span>概要</span>
+    <dl>
+      <dt>職位</dt>
+      <dd>{{phone.title}}</dd>  
+      <dt>機関</dt>
+      <dd>{{phone.institution}}</dd>  
+      <dt>勤務地</dt>
+      <dd>{{phone.place}}</dd>  
+      <dt>勤務地</dt>
+      <dd>{{phone.period}}</dd>  
+    </dl>
+  </li>
+</ul>
+
+<h3>求人内容</h3>
+<p ng-bind-html='description'></p>
+
+<h3>応募資格</h3>
+<p ng-bind-html='qualification'></p>
+
+</div>
+</div>
