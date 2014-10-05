@@ -140,7 +140,7 @@ phonecatControllers.controller('PhoneListCtrl', ['$scope', 'Phone',
     };
 
     $scope.formatDate = function(d){
-      return d.getFullYear() + "年" + (d.getMonth() + 1) + "月" + (d.getDate()+1) + '日';
+      return d == 'NA' ? '（不明）' : (d.getFullYear() + "年" + (d.getMonth() + 1) + "月" + (d.getDate()+1) + '日');
     };
 
     $scope.$watch('orderProp',function(d){
@@ -160,10 +160,12 @@ phonecatControllers.controller('PhoneListCtrl', ['$scope', 'Phone',
 
     $scope.$watch('genres',function(newval,oldval){
       localStorage['jrecin-genres'] = JSON.stringify(newval);
+      $scope.currentPage = 1;
     },true);
 
     $scope.$watch('titles',function(newval,oldval){
       localStorage['jrecin-titles'] = JSON.stringify(newval);
+      $scope.currentPage = 1;
     },true);
 
   }]);
@@ -177,6 +179,12 @@ phonecatControllers.controller('PhoneDetailCtrl', ['$scope', '$routeParams', 'Ph
       $scope.qualification = $sce.trustAsHtml($scope.phone.data['応募資格']);
     });
 
+    $scope.duedate = function(s){
+      console.log(s);
+      var d = (s && s!='NA') ? new Date(s.split(':')[1]) : undefined;
+
+      return (d == 'NA' || !d)? '（不明）' : (d.getFullYear() + "年" + (d.getMonth() + 1) + "月" + (d.getDate()+1) + '日');
+    };
   
 
     $scope.setImage = function(imageUrl) {
