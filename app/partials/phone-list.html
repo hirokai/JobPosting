@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-3">
       <!--Sidebar content-->
-      <p><small>検索結果の正しさは保証しません。自己責任で使用してください。最終データ更新：2014/10/3.</small></p>
+      <p><small>最終データ更新：2014/10/3.</small></p>
       キーワード： <input ng-model="query">
       表示順：
       <select ng-model="orderProp">
@@ -11,8 +11,6 @@
         <option value="date">公開日（新&#8594;旧）</option>
         <option value="date_rev">公開日（旧&#8594;新）</option>
       </select>
-
-
       <h4>分野</h4>
       <ul class='leftul'>
         <li>
@@ -40,10 +38,17 @@
       </div>
     <div class="col-md-9">
       <!--Body content-->
+      <div id='righttop'>
+      <small><a href="https://github.com/hirokai/JobPosting">Source code</a></small><br><br>
+<div class="fb-like" data-href="https://hirokai.github.io/jrec-in" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
+      </div>
+
+<div id='topinfo'>
       <p>{{filtered.length}}件見つかりました</p>
       <button class='btn btn-default' ng-click='prevPage()' ng-disabled='currentPage==1'>Prev</button>
       <span>{{currentPage}} / {{ceil(filtered.length / 50)}}</span>
-      <button class='btn btn-default' ng-click='nextPage()' ng-disabled='currentPage>=ceil(filtered.length / 50)'>Next</button>
+      <button class='btn btn-default' ng-click='nextPage()' ng-disabled='currentPage>=ceil(filtered.length / 50)'>Next</button>  
+</div>
       <ul class='phones'>
         <li ng-repeat="phone in filtered = (phones | filter:query | filter: selectGenre | filter: selectTitle) | orderBy:orderFunc | startFrom: (currentPage-1)*50 | limitTo: 50"
             ng-click='showDetail(this)'
@@ -55,7 +60,7 @@
           <p>公開：{{phone.date}}　期限：{{phone.period[1]}}（残り{{remaining(phone)}}日）</p>
           <p>分野：
               <span ng-repeat='p in phone.genre'>{{p}}. </span></p>
-          <div ng-if='showing == phone.id' ng-controller='PhonePreviewCtrl'>
+          <div class='preview' ng-if='showing == phone.id' ng-controller='PhonePreviewCtrl'>
             <h4>求人内容</h4>
             {{phone.description}}
             <h4>応募資格</h4>
