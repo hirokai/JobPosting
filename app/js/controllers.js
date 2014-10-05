@@ -140,7 +140,7 @@ phonecatControllers.controller('PhoneListCtrl', ['$scope', 'Phone',
     };
 
     $scope.formatDate = function(d){
-      return d.getFullYear() + "年" + (d.getMonth() + 1) + "月" + d.getDate() + '日';
+      return d.getFullYear() + "年" + (d.getMonth() + 1) + "月" + (d.getDate()+1) + '日';
     };
 
     $scope.$watch('orderProp',function(d){
