@@ -41,6 +41,14 @@ ul.leftul > li{
   margin-left: 10px;
   list-style:none;
 }
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 
 ul.leftul > li.float {
     float: left;
@@ -71,6 +79,18 @@ li > hr {
 
 div.preview {
   font-size: 12px;
+}
+
+td.statcell {
+  cursor: pointer;
+}
+
+td.statcell:hover {
+  background: #ffb499;
+}
+
+td.statcell.selected {
+  background: #ff4500;
 }
 
 </style>

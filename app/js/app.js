@@ -14,7 +14,7 @@ var phonecatApp = angular.module('phonecatApp', [
 phonecatApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
-      when('/stats', {
+      when('/grid', {
         templateUrl: 'partials/phone-grid.html',
         controller: 'PhoneGridCtrl'
       }).

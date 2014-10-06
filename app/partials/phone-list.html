@@ -2,7 +2,9 @@
   <div class="row">
     <div class="col-md-3">
       <!--Sidebar content-->
+      <h1>JREC-IN検索</h1>
       <p><small>最終データ更新：2014/10/5.</small></p>
+      <div><a ng-click='resetAllSettings()' class='btn btn-danger'>全設定をリセット</a></div>
       タイトル絞込： <input ng-model="query"><br>
       表示順：
       <select ng-model="orderProp">
@@ -11,10 +13,14 @@
         <option value="date">更新日（新&#8594;旧）</option>
         <option value="date_rev">更新日（旧&#8594;新）</option>
       </select>
-      <h4>分野</h4>
-      <ul class='leftul'>
+        <tabset>
+    <tab heading="分野・職種検索" active='$parent.normalSearchMode' ng-click='toggleGridMode(false)'>
+      <p>分野（複数選択&#8594;いずれかに適合）<br>
+      &times; 職種（複数選択&#8594;いずれかに適合）</p>
+      <h5>分野 <span class='glyphicon glyphicon-chevron-down pointer' ng-click='toggleGenre()'></span></h5>
+      <ul class='leftul' ng-hide='hiddenGenre'>
         <li>
-          <input type="checkbox" ng-model='allgenres' ng-click='allgenresToggle()' id='allgenres'><label for='allgenres'>すべて選択／解除</label>
+          <input type="checkbox" ng-model='$parent.allgenres' ng-click='allgenresToggle()' id='allgenres'><label for='allgenres'>すべて選択／解除</label>
           </li>
           <li><hr></li>
         <li ng-repeat='g in genres' class='float'>
@@ -23,23 +29,44 @@
         <div style='clear:both;'></div>
       </ul>
 
-      <div>
-      <h4>職位</h4>
-      <ul class='leftul'>
+      <h5>職種 <span class='glyphicon glyphicon-chevron-down pointer' ng-click='toggleTitle()'></span></h5>
+      <ul class='leftul' ng-hide='hiddenTitle'>
         <li>
-          <input type="checkbox" ng-model='alltitles' ng-click='alltitlesToggle()' id='alltitles'><label for='alltitles'>すべて選択／解除</label>
+          <input type="checkbox" ng-model='$parent.alltitles' ng-click='alltitlesToggle()' id='alltitles'><label for='alltitles'>すべて選択／解除</label>
           </li>
           <li><hr></li>
             <li ng-repeat='t in titles'>
           <input type="checkbox" ng-model='t.selected' id='{{t.id}}'><label for='{{t.id}}'>{{t.name}}</label>
         </li>
    </ul>
-      </div>
+    </tab>
+        <tab heading="グリッド検索" active='$parent.gridMode' ng-click='toggleGridMode(true)'>
+      検索条件：
+      <span ng-if='!gridCondition'>何も選択されていません</span>
+      <table class='table smalltable'  ng-if='gridCondition'>
+        <thead>
+          <tr>
+          <th>{{axisName[gridCondition.xaxis]}}</th>
+          <th>{{axisName[gridCondition.yaxis]}}</th>
+        </tr>
+          </thead>
+        <tbody>
+            <tr ng-repeat='sel in gridCondition.selected'>
+              <td>{{sel.x}}</td>
+              <td>{{sel.y}}</td>
+            </tr>
+        </tbody>
+      </table>
+      <a ng-href='#/grid' class='btn btn-primary'>条件選択</a>
+    </tab>
+
+  </tabset>
+
+
       </div>
     <div class="col-md-9">
       <!--Body content-->
       <div id='righttop'>
-      <small><a href="https://github.com/hirokai/JobPosting">Source code</a></small><br><br>
 <div class="fb-like" data-href="https://hirokai.github.io/jrec-in" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
       </div>
 
@@ -50,13 +77,13 @@
       <button class='btn btn-default' ng-click='nextPage()' ng-disabled='currentPage>=ceil(filtered.length / 50)'>Next</button>  
 </div>
       <ul class='phones'>
-        <li ng-repeat="phone in filtered = (phones | filter:query | filter: selectGenre | filter: selectTitle) | orderBy:orderFunc | startFrom: (currentPage-1)*50 | limitTo: 50"
+        <li ng-repeat="phone in filtered = (phones | filter:filterRecord | filter: query) | orderBy:orderFunc | startFrom: (currentPage-1)*50 | limitTo: 50"
             ng-click='showDetail(this)'
             ng-class="{thumbnail: true, 'phone-listing': true, detail: showing == phone.id}"
               >
 <!--          <a href="https://jrecin.jst.go.jp/seek/SeekJorDetail?id={{phone.id}}">{{phone.subject}}</a> -->
           <a href="#/jobs/{{phone.id}}">{{phone.subject}}</a>
-          <p>{{phone.title.join('／')}} &#64; {{phone.institution}}（{{phone.place}}）</p>
+          <p>{{phone.title.join('／')}} &#64; {{phone.institution}}（{{phone.place.join(',')}}）</p>
           <p>更新日：{{formatDate(phone.date)}}　期限：{{formatDate(phone.period[1])}}（残り{{remaining(phone)}}日）</p>
           <p>分野：
               <span ng-repeat='p in phone.genre'>{{p}}. </span></p>
@@ -71,6 +98,7 @@
         </li>
       </ul>
 
-    </div>
+<hr>
+<footer>最終データ更新：2014/10/5. <span><a href="https://github.com/hirokai/JobPosting">Source code</a></span></footer>    </div>
   </div>
 </div>

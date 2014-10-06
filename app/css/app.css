@@ -97,3 +97,95 @@ ul.specs dt {
 h1 {
   border-bottom: 1px solid gray;
 }
+
+  .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+  .btn:focus {
+  outline: none ! important;
+}
+
+label {
+  font-size: 12px;
+}
+
+ul.leftui {
+  margin-right: 40px;
+}
+
+ul.leftul > li{
+  margin-left: 10px;
+  list-style:none;
+}
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+ul.leftul > li.float {
+    float: left;
+}
+
+.phone-listing {
+  cursor: pointer;
+}
+
+li.detail {
+  height: auto;
+}
+
+li > hr {
+  margin: 10px;
+}
+
+#righttop {
+  position: absolute;
+  right: 10px;
+  top: 0px;
+}
+#topinfo {
+  margin-left: 40px;
+  margin-bottom: 10px;
+}
+
+#topinfo > small {
+}
+
+div.preview {
+  font-size: 12px;
+}
+
+td.statcell {
+  cursor: pointer;
+  background: none;
+  transition: background 0.1s linear;
+}
+
+td.statcell:hover {
+  background: #ffb499;
+  transition: background 0.1s linear;
+}
+
+td.statcell.selected {
+  background: #ff4500;
+  transition: background 0.1s linear;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.hideoptions {
+  height: 0px;
+}
+
+h1 {
+  font-size: 30px;
+}
+
+.smalltable {
+  font-size: 12px;
+}
